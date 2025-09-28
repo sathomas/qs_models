@@ -215,7 +215,7 @@ PlotEffectorHeatmap(Data=NMTable2, Title="Example B", SignalContours=true);
 text(-0.15, 1.05, "B", FontWeight="bold", Units="normalized");
 
 Figure8.Position(4) = Figure8.Position(4) * 2;
-SaveFigure(Figure=Figure8, FigureName="Figure8");
+%SaveFigure(Figure=Figure8, FigureName="Figure8");
 %%
 %[text] ## Local Functions
 %[text] ### Data Manipulation
