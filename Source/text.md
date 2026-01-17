@@ -10,7 +10,7 @@ Stephen Thomas, School of Biological Sciences, Georgia Institute of Technology, 
 
 ## Introduction
 
-At the molecular level quorum sensing seems straightforward. Synthase proteins within bacterial cells generate small molecules or peptides –  _signal molecules_ – that diffuse into the environment. At the same time, receptor proteins wait for a chance encounter with a signal molecule. When receptor proteins and signal molecules meet, they bind together and activate or suppress expression of genes that affect bacterial behavior. As the bacterial population grows, more cells with more synthases lead to higher concentrations of signal molecules. Higher concentrations, in turn, increase the probability of receptor binding, And as receptor binding becomes more likely, so too do the associated changes in bacterial behavior. Quorum sensing provides an elegant way for bacteria to adjust their behavior based on the size of their population. Some bacterial species, however, are not content with this simple approach. Many, in fact, contain multiple quorum sensing systems, including _P. aeruginosa_ [@Pesci1997], _E. coli_ [@Mayer2023], _B. subtilis_ [@Auchtung2006], _P. polymyxa_ [@Voichek2020], _V. harveyi_ [@Henke2004; @Long2009], and _V. cholerae_ [@Bridges2019; @Jung2016]. These examples raise an important question: What benefits do bacteria gain from multiple systems that a single system cannot provide? To help answer this question, mathematical models can provide a deeper understanding of the interactions between multiple quorum sensing systems and the effects of those interactions on bacterial behavior. The insights they provide are quantitative as well as qualitative, enabling precise analyses and direct comparisons. This chapter presents a step-by-step process for developing such a model, one that combines the kinetics of gene regulation with the dynamics of extracellular signal concentrations. The Materials section describes the prerequisites; the Methods section walks through a complete analysis of sample data sets, and the Notes section discusses alternatives and possible interpretations of the results.
+At the molecular level quorum sensing seems straightforward. Synthase proteins within bacterial cells generate small molecules or peptides –  _signal molecules_ – that diffuse into the environment. At the same time, receptor proteins wait for a chance encounter with a signal molecule. When receptor proteins and signal molecules meet, they bind together and activate or suppress expression of genes that affect bacterial behavior. As the bacterial population grows, more cells with more synthases lead to higher concentrations of signal molecules. Higher concentrations, in turn, increase the probability of receptor binding, and as receptor binding becomes more likely, so too do the associated changes in bacterial behavior. Quorum sensing provides an elegant way for bacteria to adjust their behavior based on the size of their population. Some bacterial species, however, are not content with this simple approach. Many, in fact, contain multiple quorum sensing systems, including _P. aeruginosa_ [@Pesci1997], _E. coli_ [@Mayer2023], _B. subtilis_ [@Auchtung2006], _P. polymyxa_ [@Voichek2020], _V. harveyi_ [@Henke2004; @Long2009], and _V. cholerae_ [@Bridges2019; @Jung2016]. These examples raise an important question: What benefits do bacteria gain from multiple systems that a single system cannot provide? To help answer this question, mathematical models can provide a deeper understanding of the interactions between multiple quorum sensing systems and the effects of those interactions on bacterial behavior. The insights they provide are quantitative as well as qualitative, enabling precise analyses and direct comparisons. This chapter presents a step-by-step process for developing such a model, one that combines the kinetics of gene regulation with the dynamics of extracellular signal concentrations. The Materials section describes the prerequisites; the Methods section walks through a complete analysis of sample data sets, and the Notes section discusses alternatives and possible interpretations of the results.
 
 ## Materials
 
@@ -31,7 +31,7 @@ The analysis starts with a data set containing observations of gene expression l
 |     0      |          0.00          |          0.02          |     3     |      0.043       |
 |     ⋮      |           ⋮            |           ⋮            |     ⋮     |        ⋮         |
 
-_**Table 1. Observations of Synthase Expression Level.** Model development begins with sets of expression level observations for each synthase gene. The data may be sampled periodically over an extended period of time, as indicated by the Time Point column. Each observation includes the concentration of exogenously supplied signals, and there should be multiple replicates for each condition. The expression level captures per capita gene expression, e.g. relative light units (RLU) divided by optical density (OD600)._
+_**Table 1. Observations of Synthase Expression Level.** Model development begins with sets of expression level observations for each synthase gene. The data may be sampled periodically over an extended period of time, as indicated by the Time Point column. Each observation includes the concentration of exogenously supplied signals (e.g. in μM), and there should be multiple replicates for each condition. The expression level captures per capita gene expression, e.g. relative light units (RLU) divided by optical density (OD600)._
 
 ## Methods
 
@@ -39,7 +39,7 @@ Developing the complete model for two quorum sensing systems proceeds in three p
 
 ### 1. Kinetics of gene regulation for signal synthases
 
-The first phase of the model development relies on Michaelis-Menten kinetics for gene regulation [@Bolouri2002;  @Mangan2003; @Bolouri2008]. Equation 1 captures those kinetics for a gene regulated by two signals. In the equation, $E(S_1, S_2)$ is the expression level as a function of the concentrations of those signals. It consists of four terms. The first term, $\alpha_0$, is the basal expression level when no signals are present. The second and third terms represent the change in expression due, in turn, to signal 1 alone and signal 2 alone. The final term represents the change in expression from the combination of both signals, above and beyond their individual contributions.
+The first phase of the model development relies on Michaelis-Menten kinetics for gene regulation [@Bolouri2002;  @Mangan2003; @Bolouri2008]. Equation 1 captures those kinetics for a gene regulated by two signals. In the equation, $E(S_1, S_2)$ is the expression level as a function of the concentrations of those signals. It consists of four terms. The first term, $\alpha_0$, is the basal expression level when no signals are present. The second and third terms represent the change in expression due, in turn, to signal 1 alone and signal 2 alone. The final term represents the change in expression from the combination of both signals, above and beyond their individual contributions. Note that _K<sub>1</sub>_ and _K<sub>2</sub>_ represent half concentration values for the respective signals, while _K<sub>1,2</sub>_ is a mathematical construct without a straightforward physical interpretation.
 $$
 E(S_1,S_2) = \alpha_0 + \alpha_1 \frac{[S_1]}{[S_1] + K_1} + \alpha_2 \frac{[S_2]}{[S_2] + K_2} + \alpha_{1,2} \frac{[S_1][S_2]}{([S_1] [S_2] + {K_{1,2}^2})}
 $$
@@ -48,7 +48,7 @@ For two quorum sensing systems, repeat the steps below to parameterize gene regu
 
 #### Identify observations corresponding to peak expression
 
-Typically the raw observational data consists of gene expression levels measured over a time period from 12 to 24 hours. The most relevant observations are the peak expression values. For consistency, identify the specific time point or points that show maximum expression at all signal concentrations. Although this process can be automated in software, it is helpful to check the results visually by plotting the mean expression level across all replicates. Figure 1 shows such plots.
+Typically the raw observational data consists of gene expression levels measured over a time period from 12 to 24 hours. The most relevant observations are the peak expression values. For consistency, identify the specific time point or points that show maximum expression at all signal concentrations (see Note 1). Although this process can be automated in software, it is helpful to check the results visually by plotting the mean expression level across all replicates. Figure 1 shows such plots.
 
 ![](../Figures/Figure1.svg)
 
@@ -71,7 +71,7 @@ Convergence of the numerical algorithm may be an issue even with this simplified
 3. Estimate $\alpha_i$ as the difference between the maximum mean expression and $\alpha_0$. Often the maximum mean expression is found at the highest signal concentration.
 4. Determine an intermediate expression level $\alpha_{½}$ half way between $\alpha_0$ and $\alpha_i$, such that $\alpha_{½} = (\alpha_i - \alpha_0)/2$.
 5. Identify the signal concentration values that result in expression levels closest to $\alpha_{½}$. In other words, find the two values of signal concentration that result in expression levels that bracket $\alpha_{½}$; one expression level should be less than $\alpha_{½}$ and the other expression level should be greater than $\alpha_{½}$.
-6. Use linear interpretation to estimate a concentration level $K_i$ that would result in the intermediate expression level $\alpha_{½}$.
+6. Use linear interpolation to estimate a concentration level $K_i$ that would result in the intermediate expression level $\alpha_{½}$.
 
 The resulting estimates $\alpha_0$, $\alpha_i$, and $K_i$ can provide initial guesses for the model parameters when using a numerical algorithm such as nonlinear regression, maximum likelihood estimation, or Bayesian analysis. Nonlinear regression is often the most straightforward approach and is generally suitable unless there is specific knowledge of the error distribution of the experimental observations. It is also readily available in most statistical software languages.
 
@@ -92,7 +92,7 @@ Fitting the single signal model provides parameters $\alpha_0$, $\alpha_i$, and 
 
 The resulting estimates $\alpha_0$, $\alpha_1$, $K_1$, $\alpha_2$, $K_2$, $\alpha_{1,2}$, and $K_{1,2}$ then provide initial guesses for the full model. As before, numerical algorithms such as nonlinear regression, maximum likelihood estimation, or Bayesian analysis can find fits for all parameters.
 
-As with single signals, a plot comparing the model predictions with observations offers a convenient, visual assessment of the model’s goodness of fit. Figure 3 shows an example plot. Again, it shows the N-fold change in expression and suppresses the values when either signal concentration is zero.
+As with single signals, a plot comparing the model predictions with observations offers a convenient, visual assessment of the model’s goodness of fit. Figure 3 shows an example plot. Again, it shows the N-fold change in expression and suppresses the values when either signal concentration is zero (see Note 2).
 
 ![](../Figures/Figure3.svg)
 
@@ -122,12 +122,12 @@ $$
 
 The coupled equations for signal dynamics include four constants, two for each signal. The $c_1$ and $c_2$ constants represent proportionality constants that translate synthase expression levels to signal production rates. The $\delta_1$ and $\delta_2$ constants are the decay rates of each signal. The values for these constants depend on the specific signals under study, and can be found either from direct observation [@Thomas2025] or published literature [@Cornforth2014]. Table 2 shows representative values.
 
-| Constant   | Sample Value |
-| ---------- | ------------ |
-| $c_1$      | 12.7         |
-| $c_2$      | 24.4         |
-| $\delta_1$ | 0.04         |
-| $\delta_2$ | 0.0235       |
+| Constant   | Sample Value          |
+| ---------- | --------------------- |
+| $c_1$      | 0.2985 pM/RLU·s       |
+| $c_2$      | 0.5734 pM/RLU·s       |
+| $\delta_1$ | 0.04 s<sup>-1</sup>   |
+| $\delta_2$ | 0.0235 s<sup>-1</sup> |
 
 _**Table 2. Constants for dynamic equation.** Representative values for Equation 4 constants taken from published literature._
 
@@ -141,7 +141,7 @@ _**Figure 4. Signal equilibrium concentration for a range of population densitie
 
 ### 3. Response of effector genes
 
-The final phase of model development uses equilibrium signal concentrations to predict the response of genes that the quorum sensing systems control. These are the genes responsible for bacterial behavior. Because quorum sensing signal molecules influence their expression levels, it is possible to model gene regulation kinetics in the same way as the signal synthases. Repeating the approach in phase 1, but for an effector gene rather than a synthase gene, yields a parameterized model for expression $E(S_1,S_2$). This model can then be applied to the equilibrium concentrations from phase 2. The result, summarized in Figure 5, predicts effector gene response across a range of environmental conditions.
+The final phase of model development uses equilibrium signal concentrations to predict the response of genes that the quorum sensing systems control. These are the genes responsible for bacterial behavior. Because quorum sensing signal molecules influence their expression levels, it is possible to model gene regulation kinetics in the same way as the signal synthases. Repeating the approach in phase 1, but for an effector gene rather than a synthase gene, yields a parameterized model for expression $E(S_1,S_2$) (se Note 2). This model can then be applied to the equilibrium concentrations from phase 2. The result, summarized in Figure 5, predicts effector gene response across a range of environmental conditions.
 
 
 
@@ -151,9 +151,9 @@ _**Figure 5. Response of an effector gene to environmental variation.** The heat
 
 ## Notes
 
-During the process of developing the full model, there may be opportunities to modify steps or interpret intermediate results. In particular, some genes may demonstrate persistent peak expression over multiple time points, and incorporating those additional time points provdes more data and improves statistical power. In addition, the gene regulation kinetics analyzed in phases 1 and 3 may offer insights into the molecular mechanisms underlying the results. The subsections below discuss each of those possibilities.
+During the process of developing the full model, there may be opportunities to modify steps or interpret intermediate results. In particular, some genes may demonstrate persistent peak expression over multiple time points, and incorporating those additional time points provides more data and improves statistical power. In addition, the gene regulation kinetics analyzed in phases 1 and 3 may offer insights into the molecular mechanisms underlying the results. The subsections below discuss each of those possibilities.
 
-### Persistent peak expression
+### Note 1: Persistent peak expression
 
 Although it is often easy to identify a single time point for maximum expression, in some cases the peak expression will persist through multiple time measures. Figure 6 highlights one example of this behavior. When multiple time points are available, including all of those time points in the analysis can improve the statistical power of the models.
 
@@ -161,9 +161,9 @@ Although it is often easy to identify a single time point for maximum expression
 
 _**Figure 6. Peak expression that persists for multiple time points.** Gene expression measured across a series of time points maintains a high value at several points. Instead of limiting the analysis to a single time point, as in Figure 1, it may be appropriate to use multiple time points in this case._
 
-### Insights from gene regulation kinetics
+### Note 2: Insights from gene regulation kinetics
 
-The gene regulation kinetics developed in phases 1 and 3 do not assume any specific, detailed mechanism; however, the results can provide insights into possible underlying molecular activity. The $\alpha$ parameter estimates can be especially revealing. For example, comparing the sum $\alpha_0 + \alpha_1 + \alpha_2$ and the estimate for $\alpha_{1,2}$ may suggest possible transcription promoter architectures. Figure 7 shows several examples of this analysis. The first three panels show results for three different example genes. In each, the expression level achievable only through the sum of single signals, $\alpha_0 + \alpha_1 + \alpha_2$, is shown in blue, while the overall maximum expression level, which includes $\alpha_{1,2}$, is shown in orange. Panel A presents the results for the example sythase gene analyzed in the Methods section and illustrated in Figure 3. The single signals together achieve a 43-fold increase in expression while the full model yields up to a 69-fold increase. Compare those results to the gene shown panel B, where the expression level increases 44-fold and 46-fold, respectively. For the latter gene, simply adding the contributions of each signal alone accounts for nearly all of the potential increase in expression. This condition suggests that the two signals act independently and could indicate independent binding of two separate transcription factors. Panel C shows a third gene with different kinetics. This gene is, in fact, the effector gene analyzed in phase 3 of the Methods. Here, the second signal alone (represented by $\alpha_2$) has a minimal impact on expression level, only increasing it by a factor of 1.6. The first signal alone ($\alpha_1$) has a more noticeable effect, increasing expression almost 6-fold. It is the combination of both signals, however, that yields the more significant 24-fold change. These kinetics suggest that the signals act together rather than independently, possibly through cooperative binding of their transcription factors. That behavor can also be seen clearly in panel D, which shows the results of the multi-signal model for the same gene. Compare the modest or negligible increases at the periphery of the surface, where only one signal is present, to the sharp increase in the center when both signals are available.
+The gene regulation kinetics developed in phases 1 and 3 do not assume any specific, detailed mechanism; however, the results can provide insights into possible underlying molecular activity. The $\alpha$ parameter estimates can be especially revealing. For example, comparing the sum $\alpha_0 + \alpha_1 + \alpha_2$ and the estimate for $\alpha_{1,2}$ may suggest possible transcription promoter architectures. Figure 7 shows several examples of this analysis. The first three panels show results for three different example genes. In each, the expression level achievable only through the sum of single signals, $\alpha_0 + \alpha_1 + \alpha_2$, is shown in blue, while the overall maximum expression level, which includes $\alpha_{1,2}$, is shown in orange. Panel A presents the results for the example synthase gene analyzed in the Methods section and illustrated in Figure 3. The single signals together achieve a 43-fold increase in expression while the full model yields up to a 69-fold increase. Compare those results to the gene shown panel B, where the expression level increases 44-fold and 46-fold, respectively. For the latter gene, simply adding the contributions of each signal alone accounts for nearly all of the potential increase in expression. This condition suggests that the two signals act independently and could indicate independent binding of two separate transcription factors. Panel C shows a third gene with different kinetics. This gene is, in fact, the effector gene analyzed in phase 3 of the Methods. Here, the second signal alone (represented by $\alpha_2$) has a minimal impact on expression level, only increasing it by a factor of 1.6. The first signal alone ($\alpha_1$) has a more noticeable effect, increasing expression almost 6-fold. It is the combination of both signals, however, that yields the more significant 24-fold change. These kinetics suggest that the signals act together rather than independently, possibly through cooperative binding of their transcription factors. That behavior can also be seen clearly in panel D, which shows the results of the multi-signal model for the same gene. Compare the modest or negligible increases at the periphery of the surface, where only one signal is present, to the sharp increase in the center when both signals are available.
 
 ![](../Figures/Figure7.svg)
 
