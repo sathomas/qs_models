@@ -4,7 +4,7 @@ Stephen Thomas, School of Biological Sciences, Georgia Institute of Technology, 
 
 ## Contents
 
-- `chapter.md` Text for publication in web-friendly format
+- [`chapter.md`](chapter.md) Text for publication in web-friendly format
 - `Example Data/` Sample data files for analysis
 - `Figures/` Web-friendly version of figures
 - `MATLAB Scripts/` Code for analyzing data
